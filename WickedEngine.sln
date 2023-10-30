@@ -56,6 +56,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example_ImGui", "Example_Im
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example_ImGui_Docking", "Example_ImGui_Docking\Example_ImGui_Docking.vcxproj", "{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunnyImGui", "FunnyImGui\FunnyImGui.vcxproj", "{2B636202-EF12-43CF-8431-FA516F2E132C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunnyTemplate", "FunnyTemplate\FunnyTemplate.vcxproj", "{76AA3D37-3252-4785-9334-3FC6B8CC07DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunnyMogus", "FunnyMogus", "{ABCD3729-B122-4065-8344-E2FBD92C5B4B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		WickedEngine\WickedEngine_SOURCE.vcxitems*{06163dcb-b183-4ed9-9c62-13ef1658e049}*SharedItemsImports = 4
@@ -122,8 +128,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2B636202-EF12-43CF-8431-FA516F2E132C} = {F1ADB727-BCFC-4967-A8ED-BF943AAA5BF7}
 		{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E} = {F1ADB727-BCFC-4967-A8ED-BF943AAA5BF7}
+		{2B636202-EF12-43CF-8431-FA516F2E132C} = {ABCD3729-B122-4065-8344-E2FBD92C5B4B}
+		{76AA3D37-3252-4785-9334-3FC6B8CC07DE} = {ABCD3729-B122-4065-8344-E2FBD92C5B4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3FF044A-B72E-4ED5-BE05-AB641BA048CD}
