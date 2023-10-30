@@ -56,12 +56,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example_ImGui", "Example_Im
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example_ImGui_Docking", "Example_ImGui_Docking\Example_ImGui_Docking.vcxproj", "{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunnyImGui", "FunnyImGui\FunnyImGui.vcxproj", "{2B636202-EF12-43CF-8431-FA516F2E132C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FunnyTemplate", "FunnyTemplate\FunnyTemplate.vcxproj", "{76AA3D37-3252-4785-9334-3FC6B8CC07DE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunnyMogus", "FunnyMogus", "{ABCD3729-B122-4065-8344-E2FBD92C5B4B}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		WickedEngine\WickedEngine_SOURCE.vcxitems*{06163dcb-b183-4ed9-9c62-13ef1658e049}*SharedItemsImports = 4
@@ -93,10 +87,6 @@ Global
 		{3A9EA3D0-A795-46ED-A737-7164E90DC309}.Debug|x64.Build.0 = Debug|x64
 		{3A9EA3D0-A795-46ED-A737-7164E90DC309}.Release|x64.ActiveCfg = Release|x64
 		{3A9EA3D0-A795-46ED-A737-7164E90DC309}.Release|x64.Build.0 = Release|x64
-		{76AA3D37-3252-4785-9334-3FC6B8CC07DE}.Debug|x64.ActiveCfg = Debug|x64
-		{76AA3D37-3252-4785-9334-3FC6B8CC07DE}.Debug|x64.Build.0 = Debug|x64
-		{76AA3D37-3252-4785-9334-3FC6B8CC07DE}.Release|x64.ActiveCfg = Release|x64
-		{76AA3D37-3252-4785-9334-3FC6B8CC07DE}.Release|x64.Build.0 = Release|x64
 		{C222218B-B6D1-406B-B2C0-8C1CED4A8D19}.Debug|x64.ActiveCfg = Debug|x64
 		{C222218B-B6D1-406B-B2C0-8C1CED4A8D19}.Debug|x64.Build.0 = Debug|x64
 		{C222218B-B6D1-406B-B2C0-8C1CED4A8D19}.Debug|x64.Deploy.0 = Debug|x64
@@ -115,10 +105,6 @@ Global
 		{3B74A7FE-CED7-4723-8824-AC708A865B98}.Debug|x64.Build.0 = Debug|x64
 		{3B74A7FE-CED7-4723-8824-AC708A865B98}.Release|x64.ActiveCfg = Release|x64
 		{3B74A7FE-CED7-4723-8824-AC708A865B98}.Release|x64.Build.0 = Release|x64
-		{2B636202-EF12-43CF-8431-FA516F2E132C}.Debug|x64.ActiveCfg = Debug|x64
-		{2B636202-EF12-43CF-8431-FA516F2E132C}.Debug|x64.Build.0 = Debug|x64
-		{2B636202-EF12-43CF-8431-FA516F2E132C}.Release|x64.ActiveCfg = Release|x64
-		{2B636202-EF12-43CF-8431-FA516F2E132C}.Release|x64.Build.0 = Release|x64
 		{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E}.Debug|x64.ActiveCfg = Debug|x64
 		{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E}.Debug|x64.Build.0 = Debug|x64
 		{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E}.Release|x64.ActiveCfg = Release|x64
@@ -129,8 +115,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5646F9FB-C9E3-4DA4-8AAA-EB7A46DD777E} = {F1ADB727-BCFC-4967-A8ED-BF943AAA5BF7}
-		{2B636202-EF12-43CF-8431-FA516F2E132C} = {ABCD3729-B122-4065-8344-E2FBD92C5B4B}
-		{76AA3D37-3252-4785-9334-3FC6B8CC07DE} = {ABCD3729-B122-4065-8344-E2FBD92C5B4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3FF044A-B72E-4ED5-BE05-AB641BA048CD}
