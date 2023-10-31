@@ -154,7 +154,7 @@ You can use the Renderer with the following functions, all of which are in the g
 ### Sprite
 Render images on the screen.
 - Params : ImageParams
-- Anim : SpriteAnim 
+- Anim : SpriteAnim
 
 </br>
 
@@ -271,6 +271,8 @@ Animate Sprites easily with this helper.
 - SetRotation(float val)
 - SetOpacity(float val)
 - SetFade(float val)
+- SetWobbleAnimAmount(float val)
+- SetWobbleAnimSpeed(float val)
 - SetRepeatable(boolean val)
 - SetVelocity(Vector val)
 - SetScaleX(float val)
@@ -627,6 +629,7 @@ The scene holds components. Entity handles can be used to retrieve associated co
 - UpdateHierarchy()	-- updates the full scene hierarchy system. Useful if you modified for example a parent transform and children immediately need up to date result in the script
 
 - CreateEntity() : int entity  -- creates an empty entity and returns it
+- FindAllEntities() : table[entities] -- returns a table with all the entities present in the given scene
 - Entity_FindByName(string value, opt Entity ancestor = INVALID_ENTITY) : int entity  -- returns an entity ID if it exists, and INVALID_ENTITY otherwise. You can specify an ancestor entity if you only want to find entities that are descendants of ancestor entity
 - Entity_Remove(Entity entity, bool recursive = true, bool keep_sorted = false)  -- removes an entity and deletes all its components if it exists. If recursive is specified, then all children will be removed as well (enabled by default). If keep_sorted is specified, then component order will be kept (disabled by default, slower)
 - Entity_Duplicate(Entity entity) : int entity  -- duplicates all of an entity's components and creates a new entity with them. Returns the clone entity handle
@@ -1697,4 +1700,11 @@ Playstation button codes:
 - [outer]ACTIVATION_STATE_ACTIVE : int
 - [outer]ACTIVATION_STATE_INACTIVE : int
 
-- Intersects(Scene scene, Ray ray) : Entity entity, Vector position,normal, Entity humanoid_ragdoll_entity, HumanoidBone humanoid_bone	-- Performns physics scene intersection for closest hit with a ray
+- Intersects(Scene scene, Ray ray) : Entity entity, Vector position,normal, Entity humanoid_ragdoll_entity, HumanoidBone humanoid_bone, Vector position_local	-- Performns physics scene intersection for closest hit with a ray
+
+- PickDrag(Scene scene, Ray, ray, PickDragOperation op) -- pick and drag physics objects such as ragdolls and rigid bodies.
+
+#### PickDragOperation
+Tracks a physics pick drag operation. Use it with `phyiscs.PickDrag()` function. When using this object first time to PickDrag, the operation will be started and the operation will end when you call Finish() or when the object is destroyed
+- [constructor]PickDragOperation() -- creates the object
+- Finish() -- finish the operation, puts down the physics object
