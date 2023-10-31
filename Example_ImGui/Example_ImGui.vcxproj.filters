@@ -11,6 +11,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{5fad27d3-fa38-4e36-9c45-fcd390a1f39a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="md4c">
+      <UniqueIdentifier>{d54786f2-6853-47e4-a68b-a4958ac50f31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -52,6 +55,15 @@
     <ClInclude Include="ImGui\TextEditor.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imgui_markdown.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_md.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="md4c\md4c.h">
+      <Filter>md4c</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -86,6 +98,12 @@
     </ClCompile>
     <ClCompile Include="ImGui\LanguageDefinitions.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_md.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="md4c\md4c.c">
+      <Filter>md4c</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
