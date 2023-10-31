@@ -12,7 +12,8 @@
 
 #include <fstream>
 #include <thread>
-
+#include <iostream>
+#include <utility>
 using namespace wi::ecs;
 using namespace wi::scene;
 using namespace wi::graphics;
@@ -354,13 +355,58 @@ void Example_ImGuiRenderer::Load()
 	// Load model.
 	wi::scene::LoadModel("../Content/models/teapot.wiscene");
 
+	
+
 	RenderPath3D::Load();
+	AllocConsole();
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 }
 
 bool show_demo_window = true;
 bool show_another_window = false;
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+typedef struct
+{
+	int line; // code line the error is at
+	std::string errorMsg;
+} LuaErrorStruct;
+
+bool RunScriptImpl(const char* script, LuaErrorStruct& errorStruct)
+{
+	if (luaL_loadstring(wi::lua::GetLuaState(), script) == LUA_OK)
+	{
+		if (lua_pcall(wi::lua::GetLuaState(), 0, LUA_MULTRET, 0) != LUA_OK)
+		{
+			goto PostError;
+		}
+		return true;
+	}
+	else {
+		goto PostError;
+	}
+
+	PostError:
+	const char* errorStr = lua_tostring(wi::lua::GetLuaState(), -1);
+	if (errorStr != nullptr)
+	{
+		std::cout << errorStr << std::endl;
+		std::string errorfr = std::string(errorStr);
+		int line = errorfr.find("]:") + 2;
+		int codeline = std::atoi((errorfr.substr(line, errorfr.find(":", line) - line)).c_str());
+		errorStruct.line = codeline;
+		int line2 = errorfr.find(":", line) + 1;
+		errorStruct.errorMsg = errorfr.substr(line2);
+
+		lua_pop(wi::lua::GetLuaState(), 1); // remove error message
+		return false;
+	}
+	else {
+		return false;
+	}
+ }
+
+bool started = false;
 void Example_ImGuiRenderer::Update(float dt)
 {
 	// Start the Dear ImGui frame
@@ -378,44 +424,99 @@ void Example_ImGuiRenderer::Update(float dt)
 	ImGui_ImplSDL2_NewFrame();
 #endif
 	ImGui::NewFrame();
-
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	if (show_demo_window)
-		ImGui::ShowDemoWindow(&show_demo_window);
-
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	if (!started)
 	{
-		static float f = 0.0f;
-		static int counter = 0;
+		editor = new TextEditor();
+		auto lang = TextEditor::LanguageDefinition::Lua();
+		editor->SetLanguageDefinition(TextEditor::LanguageDefinition::WickedEngineLua());
+		editor->SetPalette(TextEditor::GetMarianaPalette());
+		started = true;
+	}
+	
+	std::pair<int, int> cpos;
+	editor->GetCursorPosition(cpos.first, cpos.second);
+	ImGui::Begin("Code Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
+	ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Save"))
+			{
+				auto textToSave = editor->GetText();
+				/// save text....
+			}
 
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+			if (ImGui::MenuItem("Execute"))
+			{
+				LuaErrorStruct errorStruct;
+				RunScriptImpl(editor->GetText().c_str(), errorStruct);
 
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-		ImGui::Checkbox("Another Window", &show_another_window);
+				std::cout << errorStruct.line << " " << errorStruct.errorMsg;
+				std::map<int, std::string> errors;
+				errors[errorStruct.line] = errorStruct.errorMsg;
+				editor->SetErrorMarkers(errors);
 
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+			}
+				
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			bool ro = editor->IsReadOnlyEnabled();
+			if (ImGui::MenuItem("Read-only mode", nullptr, &ro))
+				editor->SetReadOnlyEnabled(ro);
+			ImGui::Separator();
 
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
+			if (ImGui::MenuItem("Undo", "ALT-Backspace", nullptr, !ro && editor->CanUndo()))
+				editor->Undo();
+			if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !ro && editor->CanRedo()))
+				editor->Redo();
 
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, editor->AnyCursorHasSelection()))
+				editor->Copy();
+			if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, !ro && editor->AnyCursorHasSelection()))
+				editor->Cut();
+			if (ImGui::MenuItem("Undo", "Del", nullptr, !ro && editor->AnyCursorHasSelection()))
+				editor->Undo();
+			if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, !ro && ImGui::GetClipboardText() != nullptr))
+				editor->Paste();
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Select all", nullptr, nullptr))
+				editor->SelectAll();
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Dark palette"))
+				editor->SetPalette(TextEditor::GetDarkPalette());
+			if (ImGui::MenuItem("Light palette"))
+				editor->SetPalette(TextEditor::GetLightPalette());
+			if (ImGui::MenuItem("Retro blue palette"))
+				editor->SetPalette(TextEditor::GetRetroBluePalette());
+			if (ImGui::MenuItem("Mariana palette"))
+				editor->SetPalette(TextEditor::GetMarianaPalette());
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
 	}
 
-	// 3. Show another simple window.
-	if (show_another_window)
-	{
-		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-		ImGui::Text("Hello from another window!");
-		if (ImGui::Button("Close Me"))
-			show_another_window = false;
-		ImGui::End();
-	}
+	ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.first + 1, cpos.second + 1, editor->GetLineCount(),
+		editor->IsOverwriteEnabled() ? "Ovr" : "Ins",
+		editor->CanUndo() ? "*" : " ",
+		editor->GetLanguageDefinition().mName.c_str(), "Temp.lua");
+	editor->Render("Lua Editor");
+	ImGui::Dummy(ImVec2(20, 20));
+	ImGui::End();
 
+	
+	
 	Scene& scene = wi::scene::GetScene();
 	// teapot_material Base Base_mesh Top Top_mesh editorLight
 	wi::ecs::Entity e_teapot_base = scene.Entity_FindByName("Base");

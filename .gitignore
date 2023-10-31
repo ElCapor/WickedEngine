@@ -228,3 +228,5 @@ wiShaderdump.h
 *.a
 *.elf
 *.prx
+Editor/config.ini
+/Editor/config.ini
