@@ -56,3 +56,6 @@
 #undef CLAMP
 //#include "basis_universal/zstd/zstddeclib.c"
 #include "basis_universal/zstd/zstd.c"
+
+#define ASIO_STANDALONE
+#include "asio.hpp"
